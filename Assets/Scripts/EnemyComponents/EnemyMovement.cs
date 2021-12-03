@@ -10,27 +10,35 @@ public class EnemyMovement : MonoBehaviour, IEnemyComponent
 {
     [SerializeField] private float agroRadius;
     [SerializeField] private float turnfloat;
-    private AIDestinationSetter aIDestinationSetter;
-    private AIPath aIPath;
+    private GameObject patrolPoint;
     public Enemy Enemy { get; set; }
     public Transform PlayerTransform { set; get; }
     private Rigidbody2D rigidbody2d;
+    private AIDestinationSetter aIDestinationSetter;
+    private AIPath aIPath;
+    private Seeker seeker;
     private void Awake()
     {
         rigidbody2d = GetComponentInParent<Rigidbody2D>();
         aIDestinationSetter = GetComponent<AIDestinationSetter>();
         aIPath = GetComponent<AIPath>();
+        seeker = GetComponent<Seeker>();
+        patrolPoint = Instantiate(new GameObject());
+        RandomPatrolPointPosition();
     }
     private void FixedUpdate()
     {
+        HandleMoveState();
         if (Vector2.Distance(transform.position, PlayerTransform.position) <= agroRadius && Enemy.State != EnemyState.Dirty)
         {
             aIDestinationSetter.target = PlayerTransform;
-            HandleMoveState();
         }
         else
         {
-            aIDestinationSetter.target = null;
+            if (aIPath.reachedEndOfPath)
+            {
+                RandomPatrolPointPosition();
+            }
         }
     }
     public void InitializeEnemy(Enemy enemy)
@@ -44,31 +52,31 @@ public class EnemyMovement : MonoBehaviour, IEnemyComponent
         rigidbody2d.isKinematic = true;
         aIPath.enabled = false;
     }
-
     private void HandleMoveState()
     {
-        if (Math.Abs(transform.position.x - PlayerTransform.position.x) > turnfloat)
+        Debug.Log(aIPath.velocity.normalized);
+        if (aIPath.velocity.normalized.y >= 0.7f && Math.Abs(aIPath.velocity.normalized.x) < 0.2f)
         {
-            if (transform.position.x > PlayerTransform.position.x)
-            {
-                Enemy.MoveState = MoveStates.MoveLeft;
-            }
-            else
-            {
-                Enemy.MoveState = MoveStates.MoveRight;
-            }
+            Enemy.MoveState = MoveStates.MoveUp;
         }
-        else
+        else if(aIPath.velocity.normalized.y <= 0.7f && Math.Abs(aIPath.velocity.normalized.x) < 0.2f)
         {
-            if (transform.position.y > PlayerTransform.position.y)
-            {
-                Enemy.MoveState = MoveStates.MoveDown;
-            }
-            else
-            {
-                Enemy.MoveState = MoveStates.MoveUp;
-            }
+            Enemy.MoveState = MoveStates.MoveDown;
         }
-
+        else if (aIPath.velocity.normalized.x > 0.1f)
+        {
+            Enemy.MoveState = MoveStates.MoveRight;
+        }
+        if (aIPath.velocity.normalized.x < -0.1f)
+        {
+            Enemy.MoveState = MoveStates.MoveLeft;
+        }
+    }
+    private void RandomPatrolPointPosition()
+    {
+        float randX = UnityEngine.Random.Range(-5f, 5f);
+        float randY = UnityEngine.Random.Range(-5f, 5f);
+        patrolPoint.transform.position = new Vector2(transform.position.x + randX, transform.position.y + randY);
+        aIDestinationSetter.target = patrolPoint.transform;
     }
 }

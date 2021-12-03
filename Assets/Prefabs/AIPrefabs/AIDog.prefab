@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agroRadius: 3
-  turnfloat: 0.5
+  turnfloat: 0.3
 --- !u!1 &5437326056876085303
 GameObject:
   m_ObjectHideFlags: 0
