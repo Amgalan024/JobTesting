@@ -23,6 +23,7 @@ public class EnemyMovement : MonoBehaviour, IEnemyComponent
         aIDestinationSetter = GetComponent<AIDestinationSetter>();
         aIPath = GetComponent<AIPath>();
         seeker = GetComponent<Seeker>();
+     
         patrolPoint = Instantiate(new GameObject());
         RandomPatrolPointPosition();
     }
@@ -44,6 +45,8 @@ public class EnemyMovement : MonoBehaviour, IEnemyComponent
     public void InitializeEnemy(Enemy enemy)
     {
         Enemy = enemy;
+        aIPath.maxSpeed = Enemy.MoveSpeed;
+        aIPath.maxAcceleration = Enemy.MoveSpeed;
         Enemy.OnEnemyDied += OnEnemyDied;
     }
     private void OnEnemyDied()
@@ -54,7 +57,6 @@ public class EnemyMovement : MonoBehaviour, IEnemyComponent
     }
     private void HandleMoveState()
     {
-        Debug.Log(aIPath.velocity.normalized);
         if (aIPath.velocity.normalized.y >= 0.7f && Math.Abs(aIPath.velocity.normalized.x) < 0.2f)
         {
             Enemy.MoveState = MoveStates.MoveUp;

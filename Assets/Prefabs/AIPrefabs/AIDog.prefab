@@ -120,7 +120,7 @@ MonoBehaviour:
   radius: 0.37
   height: 2
   canMove: 1
-  maxSpeed: 1.5
+  maxSpeed: 2
   gravity: {x: 0, y: 0, z: 0}
   groundMask:
     serializedVersion: 2
@@ -137,7 +137,7 @@ MonoBehaviour:
     maximumInterval: 2
     visualizeSensitivity: 0
   targetCompatibility: {fileID: 0}
-  maxAcceleration: 1.5
+  maxAcceleration: 2
   rotationSpeed: 360
   slowdownDistance: 1
   pickNextWaypointDist: 0.5
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthPoints: 50
-  moveSpeed: 3
+  moveSpeed: 2
 --- !u!114 &6847932134688878556
 MonoBehaviour:
   m_ObjectHideFlags: 0

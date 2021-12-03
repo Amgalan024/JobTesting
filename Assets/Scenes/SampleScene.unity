@@ -4355,7 +4355,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1649792472
 Transform:
   m_ObjectHideFlags: 0
@@ -4496,6 +4496,7 @@ MonoBehaviour:
   gameLostScreen: {fileID: 867565175}
   enemySpawners:
   - {fileID: 1733619665}
+  - {fileID: 1649792473}
 --- !u!1 &1733619663
 GameObject:
   m_ObjectHideFlags: 0
